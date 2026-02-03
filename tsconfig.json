@@ -1,0 +1,12 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "paths": {
+      "@/*": ["./*"],
+      "axios": ["./shims/axios"],
+      "axios/*": ["./node_modules/axios/*"]
+    }
+  }
+}
