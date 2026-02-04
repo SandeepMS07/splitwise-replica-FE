@@ -2,9 +2,12 @@ import { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Link } from "expo-router";
 import { Screen } from "@/components/Screen";
-import { ErrorText } from "@/components/ErrorText";
+import { AuthBackdrop } from "@/components/AuthBackdrop";
+import { Logo } from "@/components/Logo";
+import { EyeIcon } from "@/components/EyeIcon";
 import { useAuthStore } from "@/store/auth";
 import { registerSchema } from "@/utils/validation";
+import { theme } from "@/utils/theme";
 
 export default function RegisterScreen() {
   const { register, error, clearError } = useAuthStore();
@@ -12,16 +15,24 @@ export default function RegisterScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [localError, setLocalError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string; password?: string }>({});
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async () => {
     clearError();
     const parsed = registerSchema.safeParse({ name, email, password });
     if (!parsed.success) {
-      setLocalError("Fill name, valid email, and password (min 6 chars).");
+      const errors: { name?: string; email?: string; password?: string } = {};
+      for (const issue of parsed.error.issues) {
+        const field = issue.path[0];
+        if (field === "name") errors.name = "Name must be at least 2 characters.";
+        if (field === "email") errors.email = "Enter a valid email.";
+        if (field === "password") errors.password = "Password must be at least 6 characters.";
+      }
+      setFieldErrors(errors);
       return;
     }
-    setLocalError(null);
+    setFieldErrors({});
     setIsSubmitting(true);
     try {
       await register(name.trim(), email.trim().toLowerCase(), password);
@@ -33,33 +44,48 @@ export default function RegisterScreen() {
   };
 
   return (
-    <Screen>
+    <Screen style={styles.screen} contentStyle={styles.content}>
+      <AuthBackdrop />
       <View style={styles.card}>
+        <Logo size={56} style={styles.logo} />
         <Text style={styles.title}>Create account</Text>
         <Text style={styles.subtitle}>Start sharing expenses in minutes.</Text>
 
         <TextInput
           placeholder="Name"
           autoCapitalize="words"
-          style={styles.input}
+          style={[styles.input, fieldErrors.name && styles.inputError]}
           value={name}
           onChangeText={setName}
         />
+        {fieldErrors.name ? <Text style={styles.fieldError}>{fieldErrors.name}</Text> : null}
         <TextInput
           placeholder="Email"
           autoCapitalize="none"
           keyboardType="email-address"
-          style={styles.input}
+          style={[styles.input, fieldErrors.email && styles.inputError]}
           value={email}
           onChangeText={setEmail}
         />
-        <TextInput
-          placeholder="Password"
-          secureTextEntry
-          style={styles.input}
-          value={password}
-          onChangeText={setPassword}
-        />
+        {fieldErrors.email ? <Text style={styles.fieldError}>{fieldErrors.email}</Text> : null}
+        <View style={styles.passwordWrap}>
+          <TextInput
+            placeholder="Password"
+            secureTextEntry={!showPassword}
+            style={[styles.input, styles.inputWithIcon, fieldErrors.password && styles.inputError]}
+            value={password}
+            onChangeText={setPassword}
+          />
+          <TouchableOpacity
+            style={styles.eyeButton}
+            onPress={() => setShowPassword((prev) => !prev)}
+          >
+            <EyeIcon open={showPassword} />
+          </TouchableOpacity>
+        </View>
+        {fieldErrors.password ? (
+          <Text style={styles.fieldError}>{fieldErrors.password}</Text>
+        ) : null}
 
         <TouchableOpacity
           style={[styles.button, isSubmitting && styles.buttonDisabled]}
@@ -69,7 +95,7 @@ export default function RegisterScreen() {
           <Text style={styles.buttonText}>{isSubmitting ? "Creating..." : "Create Account"}</Text>
         </TouchableOpacity>
 
-        <ErrorText message={localError || error} />
+        {error ? <Text style={styles.fieldError}>{error}</Text> : null}
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>Already have an account?</Text>
@@ -83,29 +109,44 @@ export default function RegisterScreen() {
 }
 
 const styles = StyleSheet.create({
+  screen: { backgroundColor: theme.colors.background },
+  content: { justifyContent: "center" },
   card: {
-    marginTop: 40,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "rgba(255, 255, 255, 0.98)",
     padding: 24,
-    borderRadius: 16,
+    borderRadius: 20,
     shadowColor: "#0F172A",
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.08,
     shadowRadius: 12,
     elevation: 2,
   },
-  title: { fontSize: 22, fontWeight: "700", color: "#0F172A" },
-  subtitle: { fontSize: 14, color: "#64748B", marginTop: 6, marginBottom: 20 },
+  logo: { marginBottom: 12 },
+  title: { fontSize: 22, fontWeight: "700", color: theme.colors.textPrimary },
+  subtitle: { fontSize: 14, color: theme.colors.textSecondary, marginTop: 6, marginBottom: 20 },
   input: {
     borderWidth: 1,
-    borderColor: "#E2E8F0",
+    borderColor: theme.colors.border,
     borderRadius: 12,
     padding: 12,
     marginBottom: 12,
-    backgroundColor: "#F8FAFC",
+    backgroundColor: "#F9FAFB",
   },
+  inputWithIcon: { paddingRight: 44 },
+  passwordWrap: { position: "relative" },
+  eyeButton: {
+    position: "absolute",
+    right: 12,
+    top: 6,
+    height: 40,
+    width: 32,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  inputError: { borderColor: "#DC2626" },
+  fieldError: { color: "#DC2626", marginTop: -6, marginBottom: 10, fontSize: 12 },
   button: {
-    backgroundColor: "#0F172A",
+    backgroundColor: theme.colors.primary,
     padding: 14,
     borderRadius: 12,
     alignItems: "center",
@@ -114,6 +155,6 @@ const styles = StyleSheet.create({
   buttonDisabled: { opacity: 0.6 },
   buttonText: { color: "#FFFFFF", fontWeight: "600" },
   footer: { flexDirection: "row", justifyContent: "center", marginTop: 16 },
-  footerText: { color: "#64748B", marginRight: 6 },
-  footerLink: { color: "#0F172A", fontWeight: "600" },
+  footerText: { color: theme.colors.textSecondary, marginRight: 6 },
+  footerLink: { color: theme.colors.textPrimary, fontWeight: "600" },
 });

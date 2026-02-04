@@ -1,6 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Screen } from "@/components/Screen";
 import { useAuthStore } from "@/store/auth";
+import { theme } from "@/utils/theme";
+import { Logo } from "@/components/Logo";
 
 export default function ProfileScreen() {
   const { user, logout } = useAuthStore();
@@ -8,6 +10,7 @@ export default function ProfileScreen() {
   return (
     <Screen>
       <View style={styles.card}>
+        <Logo size={52} style={styles.logo} />
         <Text style={styles.title}>Profile</Text>
         <Text style={styles.label}>Name</Text>
         <Text style={styles.value}>{user?.name || "-"}</Text>
@@ -34,11 +37,12 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 2,
   },
-  title: { fontSize: 20, fontWeight: "700", color: "#0F172A", marginBottom: 16 },
-  label: { fontSize: 12, color: "#64748B", marginTop: 12 },
-  value: { fontSize: 14, fontWeight: "600", color: "#0F172A", marginTop: 4 },
+  logo: { marginBottom: 12, alignSelf: "center" },
+  title: { fontSize: 20, fontWeight: "700", color: theme.colors.textPrimary, marginBottom: 16 },
+  label: { fontSize: 12, color: theme.colors.textSecondary, marginTop: 12 },
+  value: { fontSize: 14, fontWeight: "600", color: theme.colors.textPrimary, marginTop: 4 },
   button: {
-    backgroundColor: "#0F172A",
+    backgroundColor: theme.colors.primary,
     padding: 14,
     borderRadius: 12,
     alignItems: "center",

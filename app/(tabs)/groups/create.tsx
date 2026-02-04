@@ -5,6 +5,7 @@ import { Screen } from "@/components/Screen";
 import { ErrorText } from "@/components/ErrorText";
 import { createGroup } from "@/services/groups";
 import { getApiErrorMessage } from "@/services/api";
+import { theme } from "@/utils/theme";
 
 export default function CreateGroupScreen() {
   const router = useRouter();
@@ -68,17 +69,17 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 2,
   },
-  title: { fontSize: 20, fontWeight: "700", color: "#0F172A" },
-  subtitle: { fontSize: 14, color: "#64748B", marginTop: 6, marginBottom: 16 },
+  title: { fontSize: 20, fontWeight: "700", color: theme.colors.textPrimary },
+  subtitle: { fontSize: 14, color: theme.colors.textSecondary, marginTop: 6, marginBottom: 16 },
   input: {
     borderWidth: 1,
-    borderColor: "#E2E8F0",
+    borderColor: theme.colors.border,
     borderRadius: 12,
     padding: 12,
-    backgroundColor: "#F8FAFC",
+    backgroundColor: "#F9FAFB",
   },
   button: {
-    backgroundColor: "#0F172A",
+    backgroundColor: theme.colors.primary,
     padding: 14,
     borderRadius: 12,
     alignItems: "center",

@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useCallback, useContext, useMemo, useRef, useState } from "react";
 import { Animated, Easing, StyleSheet, Text, View } from "react-native";
+import { theme } from "@/utils/theme";
 
 export type ToastOptions = {
   durationMs?: number;
@@ -104,12 +105,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   toast: {
-    backgroundColor: "#0F172A",
+    backgroundColor: theme.colors.textPrimary,
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 12,
     maxWidth: "100%",
-    shadowColor: "#0F172A",
+    shadowColor: theme.colors.textPrimary,
     shadowOpacity: 0.12,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 4 },

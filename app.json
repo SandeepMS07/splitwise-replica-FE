@@ -1,15 +1,16 @@
 {
   "expo": {
-    "name": "Splitwise Replica",
+    "name": "SettleUp - Expense Splitter",
+    "description": "A free alternative to Splitwise. Split group expenses with friends, trips, and roommates. No ads. No payments. Free forever.",
     "slug": "splitwise-replica",
     "scheme": "splitwise-replica",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#F4F6F8"
+      "backgroundColor": "#FFFFFF"
     },
     "userInterfaceStyle": "light",
     "assetBundlePatterns": ["**/*"],
@@ -18,8 +19,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#F4F6F8"
+        "foregroundImage": "./assets/logo.png",
+        "backgroundColor": "#FFFFFF"
       }
     },
     "web": {

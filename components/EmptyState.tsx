@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
+import { theme } from "@/utils/theme";
 
 export const EmptyState = ({ title, subtitle }: { title: string; subtitle?: string }) => {
   return (
@@ -11,6 +12,11 @@ export const EmptyState = ({ title, subtitle }: { title: string; subtitle?: stri
 
 const styles = StyleSheet.create({
   container: { alignItems: "center", justifyContent: "center", padding: 24 },
-  title: { fontSize: 16, fontWeight: "600", color: "#0F172A" },
-  subtitle: { fontSize: 13, color: "#64748B", marginTop: 6, textAlign: "center" },
+  title: { fontSize: 16, fontWeight: "600", color: theme.colors.textPrimary },
+  subtitle: {
+    fontSize: 13,
+    color: theme.colors.textSecondary,
+    marginTop: 6,
+    textAlign: "center",
+  },
 });

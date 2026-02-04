@@ -8,6 +8,7 @@ import { createExpense } from "@/services/expenses";
 import { getApiErrorMessage } from "@/services/api";
 import { expenseSchema } from "@/utils/validation";
 import { Group } from "@/types/models";
+import { theme } from "@/utils/theme";
 
 export default function AddExpenseScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -140,31 +141,31 @@ export default function AddExpenseScreen() {
 
 const styles = StyleSheet.create({
   scroll: { paddingBottom: 24 },
-  title: { fontSize: 20, fontWeight: "700", color: "#0F172A" },
-  subtitle: { fontSize: 12, color: "#64748B", marginTop: 4, marginBottom: 16 },
+  title: { fontSize: 20, fontWeight: "700", color: theme.colors.textPrimary },
+  subtitle: { fontSize: 12, color: theme.colors.textSecondary, marginTop: 4, marginBottom: 16 },
   input: {
     borderWidth: 1,
-    borderColor: "#E2E8F0",
+    borderColor: theme.colors.border,
     borderRadius: 12,
     padding: 12,
     marginBottom: 12,
-    backgroundColor: "#F8FAFC",
+    backgroundColor: "#F9FAFB",
   },
-  sectionTitle: { fontSize: 14, fontWeight: "700", color: "#0F172A", marginTop: 10 },
+  sectionTitle: { fontSize: 14, fontWeight: "700", color: theme.colors.textPrimary, marginTop: 10 },
   memberList: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 8 },
   memberOption: {
     borderWidth: 1,
-    borderColor: "#E2E8F0",
+    borderColor: theme.colors.border,
     borderRadius: 999,
     paddingHorizontal: 10,
     paddingVertical: 6,
     backgroundColor: "#FFFFFF",
   },
-  memberOptionSelected: { backgroundColor: "#0F172A", borderColor: "#0F172A" },
-  memberText: { fontSize: 12, color: "#0F172A" },
+  memberOptionSelected: { backgroundColor: theme.colors.primary, borderColor: theme.colors.primary },
+  memberText: { fontSize: 12, color: theme.colors.textPrimary },
   memberTextSelected: { fontSize: 12, color: "#FFFFFF" },
   button: {
-    backgroundColor: "#0F172A",
+    backgroundColor: theme.colors.primary,
     padding: 14,
     borderRadius: 12,
     alignItems: "center",

@@ -10,6 +10,7 @@ import { listGroups } from "@/services/groups";
 import { createSettlement } from "@/services/settlements";
 import { getApiErrorMessage } from "@/services/api";
 import { Balance, Group } from "@/types/models";
+import { theme } from "@/utils/theme";
 
 export default function BalancesScreen() {
   const [balances, setBalances] = useState<Balance[]>([]);
@@ -96,27 +97,33 @@ export default function BalancesScreen() {
       <ErrorText message={error} />
 
       <FlatList
-        data={balances}
-        keyExtractor={(item) => item.id || `${item.groupId}-${item.fromUser.id}-${item.toUser.id}`}
+        data={balances.filter((item) => item && item.fromUser && item.toUser)}
+        keyExtractor={(item) =>
+          item?.id || `${item?.groupId || "group"}-${item?.fromUser?.id || "from"}-${item?.toUser?.id || "to"}`
+        }
         refreshing={loading}
         onRefresh={loadBalances}
         renderItem={({ item }) => (
-          <View style={styles.balanceCard}>
-            <BalanceRow balance={item} />
-            <TouchableOpacity
-              style={styles.settleButton}
-              onPress={() => handleSettle(item)}
-              disabled={
-                settlingId === (item.id || `${item.groupId}-${item.fromUser.id}-${item.toUser.id}`)
-              }
-            >
-              <Text style={styles.settleButtonText}>
-                {settlingId === (item.id || `${item.groupId}-${item.fromUser.id}-${item.toUser.id}`)
-                  ? "Settling..."
-                  : "Mark Settled"}
-              </Text>
-            </TouchableOpacity>
-          </View>
+          item?.fromUser && item?.toUser ? (
+            <View style={styles.balanceCard}>
+              <BalanceRow balance={item} />
+              <TouchableOpacity
+                style={styles.settleButton}
+                onPress={() => handleSettle(item)}
+                disabled={
+                  settlingId ===
+                  (item.id || `${item.groupId}-${item.fromUser.id}-${item.toUser.id}`)
+                }
+              >
+                <Text style={styles.settleButtonText}>
+                  {settlingId ===
+                  (item.id || `${item.groupId}-${item.fromUser.id}-${item.toUser.id}`)
+                    ? "Settling..."
+                    : "Mark Settled"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ) : null
         )}
         ListEmptyComponent={
           !loading ? (
@@ -133,24 +140,24 @@ export default function BalancesScreen() {
 }
 
 const styles = StyleSheet.create({
-  title: { fontSize: 20, fontWeight: "700", color: "#0F172A" },
-  subtitle: { fontSize: 12, color: "#64748B", marginTop: 4, marginBottom: 16 },
+  title: { fontSize: 20, fontWeight: "700", color: theme.colors.textPrimary },
+  subtitle: { fontSize: 12, color: theme.colors.textSecondary, marginTop: 4, marginBottom: 16 },
   groupSelector: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginBottom: 8 },
   groupChip: {
     borderWidth: 1,
-    borderColor: "#E2E8F0",
+    borderColor: theme.colors.border,
     borderRadius: 999,
     paddingHorizontal: 10,
     paddingVertical: 6,
     backgroundColor: "#FFFFFF",
   },
-  groupChipActive: { backgroundColor: "#0F172A", borderColor: "#0F172A" },
-  groupChipText: { fontSize: 12, color: "#0F172A" },
+  groupChipActive: { backgroundColor: theme.colors.primary, borderColor: theme.colors.primary },
+  groupChipText: { fontSize: 12, color: theme.colors.textPrimary },
   groupChipTextActive: { fontSize: 12, color: "#FFFFFF" },
   balanceCard: { marginBottom: 6 },
   settleButton: {
     alignSelf: "flex-end",
-    backgroundColor: "#0F172A",
+    backgroundColor: theme.colors.primary,
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 10,

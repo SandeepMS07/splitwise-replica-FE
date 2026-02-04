@@ -9,6 +9,7 @@ import { getGroup } from "@/services/groups";
 import { listExpenses } from "@/services/expenses";
 import { getApiErrorMessage } from "@/services/api";
 import { Group } from "@/types/models";
+import { theme } from "@/utils/theme";
 
 export default function GroupDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -98,23 +99,23 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 16,
   },
-  title: { fontSize: 20, fontWeight: "700", color: "#0F172A" },
-  subtitle: { fontSize: 12, color: "#64748B", marginTop: 4 },
+  title: { fontSize: 20, fontWeight: "700", color: theme.colors.textPrimary },
+  subtitle: { fontSize: 12, color: theme.colors.textSecondary, marginTop: 4 },
   addButton: {
-    backgroundColor: "#0F172A",
+    backgroundColor: theme.colors.primary,
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 10,
   },
   addButtonText: { color: "#FFFFFF", fontWeight: "600", fontSize: 12 },
-  sectionTitle: { fontSize: 14, fontWeight: "700", color: "#0F172A", marginTop: 16, marginBottom: 8 },
+  sectionTitle: { fontSize: 14, fontWeight: "700", color: theme.colors.textPrimary, marginTop: 16, marginBottom: 8 },
   membersWrap: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
   memberChip: {
-    backgroundColor: "#E2E8F0",
+    backgroundColor: theme.colors.border,
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 999,
   },
-  memberText: { fontSize: 12, color: "#0F172A" },
+  memberText: { fontSize: 12, color: theme.colors.textPrimary },
   emptyList: { flexGrow: 1, justifyContent: "center" },
 });

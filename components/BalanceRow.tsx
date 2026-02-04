@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import { Balance } from "@/types/models";
 import { formatCurrency } from "@/utils/format";
+import { theme } from "@/utils/theme";
 
 export const BalanceRow = ({ balance }: { balance: Balance }) => {
   const from = balance.fromUser.name || balance.fromUser.email || "Someone";
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  title: { fontSize: 14, color: "#0F172A", fontWeight: "600" },
-  meta: { fontSize: 12, color: "#64748B", marginTop: 4 },
-  amount: { fontSize: 14, fontWeight: "700", color: "#0F172A" },
+  title: { fontSize: 14, color: theme.colors.textPrimary, fontWeight: "600" },
+  meta: { fontSize: 12, color: theme.colors.textSecondary, marginTop: 4 },
+  amount: { fontSize: 14, fontWeight: "700", color: theme.colors.textPrimary },
 });
